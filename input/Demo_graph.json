@@ -1,0 +1,108 @@
+{
+    "name": "3.1. State Machine",
+    "id": "MX_EAID_048BC314_C7CB_42ea_A9AB_92D2205B2FA8",
+    "vertices": [
+        {
+            "id": "EAID_31326EF8_0FB8_4b17_854C_A72F7C81874B",
+            "name": "EventId1Available",
+            "entry": "Dem_SetEventStatus(EventId1, FALSE)"
+        },
+        {
+            "id": "EAID_6D731E60_743D_4463_B104_40518966E694",
+            "name": "EventId1_Reset"
+        },
+        {
+            "id": "EAID_A56DA459_A31C_4537_8025_18ED87DAED88",
+            "name": "Init",
+            "doActivity": "Dem_Status = Normal"
+        },
+        {
+            "id": "EAID_E81CDC61_48E1_420d_A75F_EA51789160C3",
+            "name": "PreInit"
+        },
+        {
+            "id": "EAID_9CAD8869_CC9E_4b61_9BF9_3DCD4AD00E4D",
+            "name": "Shutdown"
+        },
+        {
+            "id": "EAID_E68928E6_847B_45b1_844D_DC5BDC92B586",
+            "name": "No_Init",
+            "kind": "initial"
+        },
+        {
+            "id": "EAID_F00F9839_B312_4455_AE16_397083EDA98E",
+            "name": "anonymous",
+            "kind": "choice"
+        },
+        {
+            "name": "exit",
+            "id": "EXIT_kdKGrDpzEx",
+            "kind": "exit",
+            "entry": "Dem_GetEventUdsStatus(EventId1, &UDSStatusByte)"
+        },
+        {
+            "name": "exit",
+            "id": "EXIT_evDRmG93i8",
+            "kind": "exit",
+            "entry": "Dem_RestartOperationCycle(1)"
+        }
+    ],
+    "edges": [
+        {
+            "id": "EAID_843C2E22_551D_49ec_A906_6C1B5CA99598",
+            "sourceVertexId": "EAID_31326EF8_0FB8_4b17_854C_A72F7C81874B",
+            "targetVertexId": "EAID_F00F9839_B312_4455_AE16_397083EDA98E"
+        },
+        {
+            "id": "EAID_023C57B0_ED5C_49f7_B479_63C234DDEFC3",
+            "sourceVertexId": "EAID_A56DA459_A31C_4537_8025_18ED87DAED88",
+            "targetVertexId": "EAID_31326EF8_0FB8_4b17_854C_A72F7C81874B",
+            "Guard": "Dem_Stauts = Normal",
+            "Guard_Effect": "Dem_SetEventAvailable(EventId1, TRUE)"
+        },
+        {
+            "id": "EAID_D5388772_D5CF_417e_816B_004979BA365B",
+            "sourceVertexId": "EAID_6D731E60_743D_4463_B104_40518966E694",
+            "targetVertexId": "EAID_9CAD8869_CC9E_4b61_9BF9_3DCD4AD00E4D",
+            "Call": "Dem_Shutdown()"
+        },
+        {
+            "id": "EAID_37E0A07D_262B_4180_BAEC_5740EEC32A05",
+            "sourceVertexId": "EAID_F00F9839_B312_4455_AE16_397083EDA98E",
+            "targetVertexId": "EAID_6D731E60_743D_4463_B104_40518966E694",
+            "Guard": "( UDSStatusByte & 3 ) == 3",
+            "Guard_Effect": "Dem_ResetEventStatus(EventId1)"
+        },
+        {
+            "id": "EAID_757560C3_2671_412d_A6F7_E66195D0AD34",
+            "sourceVertexId": "EAID_F00F9839_B312_4455_AE16_397083EDA98E",
+            "targetVertexId": "EAID_9CAD8869_CC9E_4b61_9BF9_3DCD4AD00E4D",
+            "Guard": "( UDSStatusByte & 3 ) != 3",
+            "Guard_Effect": "Dem_Shutdown()"
+        },
+        {
+            "id": "EAID_47F7EB68_6BDF_4579_90F5_7422717C121E",
+            "sourceVertexId": "EAID_E81CDC61_48E1_420d_A75F_EA51789160C3",
+            "targetVertexId": "EAID_A56DA459_A31C_4537_8025_18ED87DAED88",
+            "Guard": "Dem_Status == PreInit",
+            "Guard_Effect": "Dem_Init(NULL_PTR)"
+        },
+        {
+            "id": "EAID_3849F4F2_57FA_4988_AEDC_71763AB05AC8",
+            "sourceVertexId": "EAID_E68928E6_847B_45b1_844D_DC5BDC92B586",
+            "targetVertexId": "EAID_E81CDC61_48E1_420d_A75F_EA51789160C3",
+            "Guard": "Dem_Status == No_Init",
+            "Guard_Effect": "Dem_PreInit()"
+        },
+        {
+            "id": "EXIT_4zEpzXhGLN",
+            "sourceVertexId": "EAID_31326EF8_0FB8_4b17_854C_A72F7C81874B",
+            "targetVertexId": "EXIT_kdKGrDpzEx"
+        },
+        {
+            "id": "EXIT_tLtgG2kl3U",
+            "sourceVertexId": "EAID_A56DA459_A31C_4537_8025_18ED87DAED88",
+            "targetVertexId": "EXIT_evDRmG93i8"
+        }
+    ]
+}

@@ -1,0 +1,320 @@
+{
+    "model": "3.1. State Machine",
+    "cases": [
+        {
+            "name": "",
+            "description": "",
+            "steps": [
+                {
+                    "state": "No_Init"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == No_Init",
+                        "if": {
+                            "action": "Dem_PreInit()",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "PreInit"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == PreInit",
+                        "if": {
+                            "action": "Dem_Init(NULL_PTR)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "Init"
+                },
+                {
+                    "doActivity": "Dem_Status = Normal"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Stauts = Normal",
+                        "if": {
+                            "action": "Dem_SetEventAvailable(EventId1, TRUE)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "EventId1Available"
+                },
+                {
+                    "entry": "Dem_SetEventStatus(EventId1, FALSE)"
+                },
+                {
+                    "state": "anonymous"
+                },
+                {
+                    "Guard": {
+                        "condition": "( UDSStatusByte & 3 ) == 3",
+                        "if": {
+                            "action": "Dem_ResetEventStatus(EventId1)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "EventId1_Reset"
+                },
+                {
+                    "action": "Dem_Shutdown()"
+                },
+                {
+                    "state": "Shutdown"
+                }
+            ]
+        },
+        {
+            "name": "",
+            "description": "",
+            "steps": [
+                {
+                    "state": "No_Init"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == No_Init",
+                        "if": {
+                            "action": "Dem_PreInit()",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "PreInit"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == PreInit",
+                        "if": {
+                            "action": "Dem_Init(NULL_PTR)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "Init"
+                },
+                {
+                    "doActivity": "Dem_Status = Normal"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Stauts = Normal",
+                        "if": {
+                            "action": "Dem_SetEventAvailable(EventId1, TRUE)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "EventId1Available"
+                },
+                {
+                    "entry": "Dem_SetEventStatus(EventId1, FALSE)"
+                },
+                {
+                    "state": "anonymous"
+                },
+                {
+                    "Guard": {
+                        "condition": "( UDSStatusByte & 3 ) != 3",
+                        "if": {
+                            "action": "Dem_Shutdown()",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "Shutdown"
+                }
+            ]
+        },
+        {
+            "name": "",
+            "description": "",
+            "steps": [
+                {
+                    "state": "No_Init"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == No_Init",
+                        "if": {
+                            "action": "Dem_PreInit()",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "PreInit"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == PreInit",
+                        "if": {
+                            "action": "Dem_Init(NULL_PTR)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "Init"
+                },
+                {
+                    "doActivity": "Dem_Status = Normal"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Stauts = Normal",
+                        "if": {
+                            "action": "Dem_SetEventAvailable(EventId1, TRUE)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "EventId1Available"
+                },
+                {
+                    "entry": "Dem_SetEventStatus(EventId1, FALSE)"
+                },
+                {
+                    "state": "exit"
+                },
+                {
+                    "entry": "Dem_GetEventUdsStatus(EventId1, &UDSStatusByte)"
+                }
+            ]
+        },
+        {
+            "name": "",
+            "description": "",
+            "steps": [
+                {
+                    "state": "No_Init"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == No_Init",
+                        "if": {
+                            "action": "Dem_PreInit()",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "PreInit"
+                },
+                {
+                    "Guard": {
+                        "condition": "Dem_Status == PreInit",
+                        "if": {
+                            "action": "Dem_Init(NULL_PTR)",
+                            "arguments": 0
+                        },
+                        "else": {
+                            "action": "wait",
+                            "arguments": [
+                                10
+                            ]
+                        }
+                    }
+                },
+                {
+                    "state": "Init"
+                },
+                {
+                    "doActivity": "Dem_Status = Normal"
+                },
+                {
+                    "state": "exit"
+                },
+                {
+                    "entry": "Dem_RestartOperationCycle(1)"
+                }
+            ]
+        }
+    ]
+}
