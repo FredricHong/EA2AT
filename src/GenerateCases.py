@@ -1,5 +1,5 @@
 import json
-import Parse
+import EaParse
 import FindPaths
 
 
@@ -68,7 +68,7 @@ class Generator:
 
 if __name__ == '__main__':
     EA_xmi_file = '../input/Demo.xmi'
-    js = Parse.EA2JSON(EA_xmi_file)
+    js = EaParse.EaPaser(EA_xmi_file)
     g = FindPaths.PathFinder(js.export_graph())
     cases = Generator(g)
     case_file = EA_xmi_file.replace(".xmi", "_cases.json")

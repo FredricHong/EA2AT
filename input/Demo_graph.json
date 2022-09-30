@@ -36,13 +36,13 @@
         },
         {
             "name": "exit",
-            "id": "EXIT_kdKGrDpzEx",
+            "id": "EXIT_g9vxHCbVTM",
             "kind": "exit",
             "entry": "Dem_GetEventUdsStatus(EventId1, &UDSStatusByte)"
         },
         {
             "name": "exit",
-            "id": "EXIT_evDRmG93i8",
+            "id": "EXIT_QqmK63Udnm",
             "kind": "exit",
             "entry": "Dem_RestartOperationCycle(1)"
         }
@@ -95,14 +95,14 @@
             "Guard_Effect": "Dem_PreInit()"
         },
         {
-            "id": "EXIT_4zEpzXhGLN",
+            "id": "EXIT_47WlLViGpH",
             "sourceVertexId": "EAID_31326EF8_0FB8_4b17_854C_A72F7C81874B",
-            "targetVertexId": "EXIT_kdKGrDpzEx"
+            "targetVertexId": "EXIT_g9vxHCbVTM"
         },
         {
-            "id": "EXIT_tLtgG2kl3U",
+            "id": "EXIT_QgA3I583ZD",
             "sourceVertexId": "EAID_A56DA459_A31C_4537_8025_18ED87DAED88",
-            "targetVertexId": "EXIT_evDRmG93i8"
+            "targetVertexId": "EXIT_QqmK63Udnm"
         }
     ]
 }

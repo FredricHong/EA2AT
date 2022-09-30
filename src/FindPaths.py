@@ -10,6 +10,7 @@ class PathFinder:
     def __init__(self, js_graph):
         for v in js_graph["vertices"]:
             self._list_v.append(v)
+        # substitute edge id with edge index
         for idx, v in enumerate(self._list_v):
             for e in js_graph["edges"]:
                 if v["id"] == e["sourceVertexId"]:
@@ -21,6 +22,7 @@ class PathFinder:
             del v["id"]
             v["id"] = idx
         list_size = len(js_graph["vertices"])
+        # construct a edge matrix and filled with None.
         self._matrix = [[None for j in range(1, list_size + 1)] for i in range(1, list_size + 1)]
         for e in js_graph["edges"]:
             src_idx = -1

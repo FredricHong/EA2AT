@@ -21,7 +21,31 @@ def search_by_key(js_obj, key):
     return
 
 
-def generate_random_str(randomlength=16):
+def transfer_vertice(src_obj):
+    trg_obj = json.loads("{}")
+    trg_obj["id"] = src_obj["@xmi.id"]
+    if '@name' in src_obj:
+        trg_obj["name"] = src_obj["@name"]
+    else:
+        trg_obj["name"] = "anonymous"
+    if '@kind' in src_obj:
+        trg_obj["kind"] = src_obj["@kind"]
+    js_exit = search_by_key(src_obj, "UML:State.exit")
+    if js_exit:
+        trg_obj["exit"] = \
+            js_exit["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
+    js_entry = search_by_key(src_obj, "UML:State.entry")
+    if js_entry:
+        trg_obj["entry"] = \
+            js_entry["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
+    js_doActivity = search_by_key(src_obj, "UML:State.doActivity")
+    if js_doActivity:
+        trg_obj["doActivity"] = \
+            js_doActivity["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
+    return trg_obj
+
+
+def random_str(randomlength=16):
     random_str = ''
     base_str = 'ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789'
     length = len(base_str) - 1
@@ -30,7 +54,7 @@ def generate_random_str(randomlength=16):
     return random_str
 
 
-class EA2JSON:
+class EaPaser:
     _xml_file = None
     _js_data = None
     _js_file = None
@@ -55,40 +79,14 @@ class EA2JSON:
                 json.dump(self._js_data, js_f, indent=4)
                 js_f.close()
 
-    def _transfer_vertice(self, src_obj):
-        trg_obj = json.loads("{}")
-        trg_obj["id"] = src_obj["@xmi.id"]
-        if '@name' in src_obj:
-            trg_obj["name"] = src_obj["@name"]
-        else:
-            trg_obj["name"] = "anonymous"
-        if '@kind' in src_obj:
-            trg_obj["kind"] = src_obj["@kind"]
-
-        js_exit = search_by_key(src_obj, "UML:State.exit")
-        if js_exit:
-            trg_obj["exit"] = \
-                js_exit["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
-
-        js_entry = search_by_key(src_obj, "UML:State.entry")
-        if js_entry:
-            trg_obj["entry"] = \
-                js_entry["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
-
-        js_doActivity = search_by_key(src_obj, "UML:State.doActivity")
-        if js_doActivity:
-            trg_obj["doActivity"] = \
-                js_doActivity["UML:ActionSequence"]["UML:ActionSequence.action"]["UML:CallAction"]["@name"]
-        return trg_obj
-
     def _add_vertices(self, node_type):
         js_node = search_by_key(self._js_data, node_type)
         if js_node:
             if isinstance(js_node, list):
                 for item in js_node:
-                    self._js_graph["vertices"].append(self._transfer_vertice(item))
+                    self._js_graph["vertices"].append(transfer_vertice(item))
             if isinstance(js_node, dict):
-                self._js_graph["vertices"].append(self._transfer_vertice(js_node))
+                self._js_graph["vertices"].append(transfer_vertice(js_node))
 
     def _add_edges(self, edge_type):
         js_edges = search_by_key(self._js_data, edge_type)
@@ -100,7 +98,8 @@ class EA2JSON:
                 js_obj["targetVertexId"] = item["@target"]
                 for js_edge_tag in item["UML:ModelElement.taggedValue"]["UML:TaggedValue"]:
                     idref = js_edge_tag["UML:TaggedValue.type"]["UML:TagDefinition"]["@xmi.idref"]
-                    list_TagDefinition = self._js_data["XMI"]["XMI.content"]["UML:Model"]["UML:Namespace.ownedElement"]["UML:TagDefinition"]
+                    list_TagDefinition = self._js_data["XMI"]["XMI.content"]["UML:Model"]["UML:Namespace.ownedElement"][
+                        "UML:TagDefinition"]
                     for TagDefinition in list_TagDefinition:
                         if idref == TagDefinition["@xmi.id"]:
                             if TagDefinition["@name"] == "privatedata1":
@@ -118,13 +117,13 @@ class EA2JSON:
             if "exit" in v:
                 v_exit = json.loads("{}")
                 v_exit["name"] = "exit"
-                v_exit["id"] = "EXIT_" + generate_random_str(10)
+                v_exit["id"] = "EXIT_" + random_str(10)
                 v_exit["kind"] = "exit"
                 v_exit["entry"] = v["exit"]
                 del v["exit"]
                 vertices.append(v_exit)
                 e_exit = json.loads("{}")
-                e_exit["id"] = "EXIT_" + generate_random_str(10)
+                e_exit["id"] = "EXIT_" + random_str(10)
                 e_exit["sourceVertexId"] = v["id"]
                 e_exit["targetVertexId"] = v_exit["id"]
                 edges.append(e_exit)
@@ -153,5 +152,5 @@ class EA2JSON:
 
 
 if __name__ == '__main__':
-    EA_xmi_file = '/input/Demo.xmi'
-    x2j = EA2JSON(EA_xmi_file)
+    EA_xmi_file = '../input/Demo.xmi'
+    x2j = EaPaser(EA_xmi_file)
